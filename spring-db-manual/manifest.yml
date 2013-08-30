@@ -1,7 +1,7 @@
 ---
 applications:
 - name: spring-db-manual
-  memory: 1024M
+  memory: 256M
   instances: 1
   host: spring-db-manual-${random-word}
   path: target/spring-db-manual-1.0.0-BUILD-SNAPSHOT

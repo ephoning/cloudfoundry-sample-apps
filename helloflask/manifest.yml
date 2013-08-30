@@ -1,0 +1,13 @@
+---
+applications:
+- name: helloflask
+  memory: 256M
+  instances: 1
+  host: helloflask
+  domain: cfapps.io
+  path: .
+  services:
+    recipe-server:
+      label: user-provided
+      credentials:
+        wsdlDocumentUrl: http://spring-ws-recipe.cfapps.io/binit/ws/recipe.wsdl

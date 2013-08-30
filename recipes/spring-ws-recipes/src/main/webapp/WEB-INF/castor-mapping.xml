@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+	<!-- Search request -->
+	<class name="com.rollingstone.recipes.oxm.GetRecipeRequest">
+		<map-to xml="getRecipeRequest" ns-uri="http://binit.blogspot.com/ws/schema/recipe"/>
+		<field name="recipeName" type="string">
+			<bind-xml name="recipeName" node="element"/>
+		</field>
+		<field name="recipeType" type="string">
+			<bind-xml name="recipeType" node="element"/>
+		</field>
+	</class>
+        
+	<class name="com.rollingstone.recipes.oxm.GetRecipeResponse">
+		<map-to xml="getRecipeResponse" ns-uri="http://binit.blogspot.com/ws/schema/recipe"/>
+		<field name="code" type="string">
+			<bind-xml name="code" node="element"/>
+		</field>
+		<field name="recipe" type="com.rollingstone.recipes.domain.Recipe" collection="arraylist">
+			<bind-xml name="recipe"/>
+		</field>
+		<field name="totalRecord" type="integer">
+			<bind-xml name="totalRecord" node="element"/>
+		</field>
+	</class>
+	
+	<!-- Edit request -->
+	<class name="com.rollingstone.recipes.oxm.EditRecipeRequest">
+		<map-to xml="editRecipeRequest" ns-uri="http://binit.blogspot.com/ws/schema/recipe"/>
+		<field name="editType" type="string">
+			<bind-xml name="editType" node="element"/>
+		</field>
+		<field name="recipe" type="com.rollingstone.recipes.domain.Recipe">
+			<bind-xml name="recipe"/>
+		</field>
+	</class>
+        
+	<class name="com.rollingstone.recipes.oxm.EditRecipeResponse">
+		<map-to xml="editRecipeResponse" ns-uri="http://binit.blogspot.com/ws/schema/recipe"/>
+		<field name="code" type="string">
+			<bind-xml name="code" node="element"/>
+		</field>
+	</class>
+	
+	<!-- Delete request -->
+	<class name="com.rollingstone.recipes.oxm.DeleteRecipeRequest">
+		<map-to xml="deleteRecipeRequest" ns-uri="http://binit.blogspot.com/ws/schema/recipe"/>
+		<field name="recipeId" type="integer">
+			<bind-xml name="recipeId" node="element"/>
+		</field>
+	</class>
+        
+	<class name="com.rollingstone.recipes.oxm.DeleteRecipeResponse">
+		<map-to xml="deleteRecipeResponse" ns-uri="http://binit.blogspot.com/ws/schema/recipe"/>
+		<field name="code" type="string">
+			<bind-xml name="code" node="element"/>
+		</field>
+	</class>
+	
+	<!-- Common -->
+	<class name="com.rollingstone.recipes.domain.Recipe">
+		<map-to xml="recipe" ns-uri="http://binit.blogspot.com/ws/schema/recipe"/>
+		<field name="recipeId" type="integer">
+			<bind-xml name="recipeId" node="element"/>
+		</field>
+		<field name="recipeName" type="string">
+			<bind-xml name="recipeName" node="element"/>
+		</field>
+		<field name="recipeDescription" type="string">
+			<bind-xml name="recipeDescription" node="element"/>
+		</field>
+		<field name="createdBy" type="string">
+			<bind-xml name="createdBy" node="element"/>
+		</field>
+		<field name="createdOn" type="date">
+			<bind-xml name="createdOn" node="element"/>
+		</field>
+		<field name="recipeType" type="string">
+			<bind-xml name="recipeType" node="element"/>
+		</field>
+		<field name="visitorCount" type="integer">
+			<bind-xml name="visitorCount" node="element"/>
+		</field>
+		<field name="process" type="string" handler="com.rollingstone.recipes.domain.ClobAdapter">
+			<bind-xml name="process" node="element"/>
+		</field>
+		<field name="ingredients" type="com.rollingstone.recipes.domain.RecipeIngredients" collection="arraylist">
+			<bind-xml name="recipe_ingredients"/>
+		</field>
+	</class>
+	
+	<class name="com.rollingstone.recipes.domain.RecipeIngredients">
+		<map-to xml="recipe_ingredients" ns-uri="http://binit.blogspot.com/ws/schema/recipe"/>
+		<field name="recipeDetailId" type="integer">
+			<bind-xml name="recipeDetailId" node="element"/>
+		</field>
+		<field name="ingredientName" type="string">
+			<bind-xml name="ingredientName" node="element"/>
+		</field>
+		<field name="uom" type="string">
+			<bind-xml name="uom" node="element"/>
+		</field>
+		<field name="quantity" type="string">
+			<bind-xml name="quantity" node="element"/>
+		</field>
+	</class>
+</mapping>

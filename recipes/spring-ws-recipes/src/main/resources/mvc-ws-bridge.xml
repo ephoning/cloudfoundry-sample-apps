@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation=
+	"http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/web-services
+	http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+	http://www.springframework.org/schema/oxm 
+	http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd">
+
+	<description>
+        This web application context contains Spring-WS beans. The beans defined in this context are automatically
+        detected by Spring-WS, similar to the way Controllers are picked up in Spring Web MVC.
+	</description>
+    
+	
+		<!-- Please see http://static.springsource.org/spring-ws/site/reference/html/common.html -->
+    <beans profile="default">
+
+        <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+
+        <!-- Please see http://static.springsource.org/spring-ws/site/reference/html/server.html  -->
+
+        <bean class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter"
+              p:messageFactory-ref="messageFactory"/>
+
+        <!-- Please see http://static.springsource.org/spring-ws/site/reference/html/server.html  -->
+        <bean class="org.springframework.ws.transport.http.WsdlDefinitionHandlerAdapter"/>
+
+        <!--  	 Please see http://static.springsource.org/spring-ws/site/reference/html/server.html
+5.3.2. Wiring up Spring-WS in a DispatcherServlet -->
+        <bean id="messageDispatcher" class="org.springframework.ws.server.MessageDispatcher">
+            <property name="endpointAdapters">
+                <list>
+                    <ref bean="defaultMethodEndpointAdapter"/>
+                </list>
+            </property>
+        </bean>
+
+        <!--  	 Please see http://static.springsource.org/spring-ws/site/reference/html/server.html
+
+                5.3.2. Wiring up Spring-WS in a DispatcherServlet -->
+        <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+            <property name="mappings">
+                <value>
+                    /ws=messageDispatcher
+                    /ws/recipe.wsdl=recipe
+                </value>
+            </property>
+        </bean>
+
+        <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+
+    </beans>
+
+    <beans profile="cloud">
+
+        <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+
+        <!-- Please see http://static.springsource.org/spring-ws/site/reference/html/server.html  -->
+
+        <bean class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter"
+              p:messageFactory-ref="messageFactory"/>
+
+        <!-- Please see http://static.springsource.org/spring-ws/site/reference/html/server.html  -->
+        <bean class="org.springframework.ws.transport.http.WsdlDefinitionHandlerAdapter"/>
+
+        <!--  	 Please see http://static.springsource.org/spring-ws/site/reference/html/server.html
+5.3.2. Wiring up Spring-WS in a DispatcherServlet -->
+        <bean id="messageDispatcher" class="org.springframework.ws.server.MessageDispatcher">
+            <property name="endpointAdapters">
+                <list>
+                    <ref bean="defaultMethodEndpointAdapter"/>
+                </list>
+            </property>
+        </bean>
+
+        <!--  	 Please see http://static.springsource.org/spring-ws/site/reference/html/server.html
+
+                5.3.2. Wiring up Spring-WS in a DispatcherServlet -->
+        <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+            <property name="mappings">
+                <value>
+                    /ws=messageDispatcher
+                    /ws/recipe.wsdl=cloud-recipe
+                </value>
+            </property>
+        </bean>
+
+        <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+
+    </beans>
+
+</beans>

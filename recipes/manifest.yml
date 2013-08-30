@@ -1,0 +1,26 @@
+---
+env:
+  DYNAMIC_WSDL_LOCATION_URI: http://spring-ws-recipe.cfapps.io/binit/ws
+  WSDL_DOCUMENT_URL: http://spring-ws-recipe.cfapps.io/binit/ws/recipe.wsdl
+  TARGET_NAMESPACE_URI: http://binit.blogspot.com/ws/schema/recipe
+
+applications:
+- name: spring-ws-recipe
+  memory: 512M
+  instances: 1
+  host: spring-ws-recipe
+  domain: cfapps.io
+  path: ./spring-ws-recipes/target
+  services:
+    cleardb:
+      label: cleardb
+      provider: cleardb
+      version: n/a
+      plan: spark
+- name: spring-ws-recipe-client
+  memory: 512M
+  instances: 1
+  host: spring-ws-recipe-client
+  domain: cfapps.io
+  path: ./spring-ws-recipes-client/target
+

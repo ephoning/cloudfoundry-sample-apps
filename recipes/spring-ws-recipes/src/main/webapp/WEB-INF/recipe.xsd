@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="qualified"
+	targetNamespace="http://binit.blogspot.com/ws/schema/recipe" xmlns:tns="http://binit.blogspot.com/ws/schema/recipe">
+
+	<element name="recipeId" tns:maxOccurs="1" tns:minOccurs="0" type="int"></element>
+
+	<element name="recipeName" tns:maxOccurs="1" tns:minOccurs="1">
+		<simpleType>
+			<restriction base="string">
+				<minLength value="1"></minLength>
+				<maxLength value="200"></maxLength>
+				<whiteSpace value="collapse"></whiteSpace>
+			</restriction>
+		</simpleType>
+	</element>
+
+	<element name="recipeDescription" tns:maxOccurs="1"
+		tns:minOccurs="1">
+		<simpleType>
+			<restriction base="string">
+				<minLength value="1"></minLength>
+				<whiteSpace value="collapse"></whiteSpace>
+				<maxLength value="2000"></maxLength>
+			</restriction>
+		</simpleType>
+	</element>
+
+	<element name="recipeType" tns:maxOccurs="1" tns:minOccurs="1">
+		<simpleType>
+			<restriction base="string">
+				<minLength value="1"></minLength>
+				<whiteSpace value="collapse"></whiteSpace>
+				<maxLength value="200"></maxLength>
+			</restriction>
+		</simpleType>
+	</element>
+
+	<element name="createdBy" tns:maxOccurs="1" tns:minOccurs="0">
+		<simpleType>
+			<restriction base="string">
+				<minLength value="0"></minLength>
+				<maxLength value="200"></maxLength>
+				<whiteSpace value="collapse"></whiteSpace>
+			</restriction>
+		</simpleType>
+	</element>
+
+	<element name="visitorCount" type="int"></element>
+	
+	<element name="createdOn" type="dateTime"></element>
+
+    <element name="process" tns:maxOccurs="1" tns:minOccurs="0">
+    	<simpleType>
+    		<restriction base="string">
+    			<minLength value="0"></minLength>
+    			<whiteSpace value="collapse"></whiteSpace>
+    		</restriction>
+    	</simpleType>
+    </element>
+    
+    <element name="recipeDetailId"  tns:maxOccurs="1" tns:minOccurs="0" type="int"></element>
+
+    <element name="ingredientName">
+    	<simpleType>
+    		<restriction base="string">
+    			<minLength value="1"></minLength>
+    			<whiteSpace value="collapse"></whiteSpace>
+    			<maxLength value="200"></maxLength>
+    		</restriction>
+    	</simpleType>
+    </element>
+    
+    <element name="uom">
+    	<simpleType>
+    		<restriction base="string">
+    			<minLength value="1"></minLength>
+    			<whiteSpace value="collapse"></whiteSpace>
+    			<maxLength value="200"></maxLength>
+    		</restriction>
+    	</simpleType>
+    </element>
+    
+    <element name="quantity">
+    	<simpleType>
+    		<restriction base="string">
+    			<minLength value="1"></minLength>
+    			<whiteSpace value="collapse"></whiteSpace>
+    			<maxLength value="200"></maxLength>
+    		</restriction>
+    	</simpleType>
+    </element>
+
+    <element name="code" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+            <restriction base="string">
+                 <enumeration value="SUCCESS"/>
+      			 <enumeration value="FAILURE"/>
+            </restriction>
+        </simpleType>
+    </element>
+
+    <element name="totalRecord" tns:maxOccurs="1" tns:minOccurs="1" type="int">
+    </element>
+    
+    <element name="editType" tns:maxOccurs="1" tns:minOccurs="1">
+        <simpleType>
+            <restriction base="string">
+                 <enumeration value="ADD"/>
+      			 <enumeration value="UPDATE"/>
+            </restriction>
+        </simpleType>
+    </element>
+
+	<element name="recipe_ingredients" tns:minOccurs="1">
+	    <complexType>
+			<sequence>
+				<element ref="tns:recipeDetailId" />
+				<element ref="tns:ingredientName"/>
+				<element ref="tns:uom"/>
+				<element ref="tns:quantity"/>
+			</sequence>
+	    </complexType>
+	</element>
+	<element name="recipe" tns:maxOccurs="1" tns:minOccurs="1">
+		<complexType>
+			<sequence>
+				<element ref="tns:recipeId"/>
+				<element ref="tns:recipeName"/>
+				<element ref="tns:recipeDescription"/>
+				<element ref="tns:createdBy"/>
+				<element ref="tns:recipeType"/>
+				<element ref="tns:visitorCount"/>
+				<element ref="tns:process"/>
+				<element ref="tns:createdOn"/>
+				<sequence>
+					<element ref="tns:recipe_ingredients" maxOccurs="unbounded" minOccurs="0"/>
+				</sequence>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="getRecipeRequest" tns:maxOccurs="1" tns:minOccurs="0">
+		<complexType>
+			<sequence>
+				<element ref="tns:recipeName"/>
+				<element ref="tns:recipeType"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="getRecipeResponse" tns:maxOccurs="1" tns:minOccurs="1">
+		<complexType>
+			<sequence>
+				<element ref="tns:code"/>
+				<element ref="tns:recipe" maxOccurs="unbounded" minOccurs="0"/>
+				<element ref="tns:totalRecord"/>
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="editRecipeRequest" tns:maxOccurs="1" tns:minOccurs="1">
+		<complexType>
+			<sequence>
+				<element ref="tns:editType"/>
+				<element ref="tns:recipe"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="editRecipeResponse" tns:maxOccurs="1" tns:minOccurs="1">
+		<complexType>
+			<sequence>
+				<element ref="tns:code"/>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="deleteRecipeRequest" tns:maxOccurs="1" tns:minOccurs="1">
+		<complexType>
+			<sequence>
+				<element ref="tns:recipeId"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="deleteRecipeResponse" tns:maxOccurs="1" tns:minOccurs="1">
+		<complexType>
+			<sequence>
+				<element ref="tns:code"/>
+			</sequence>
+		</complexType>
+	</element>
+
+</schema>

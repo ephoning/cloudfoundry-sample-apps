@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation=
+	"http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/web-services
+	http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+	http://www.springframework.org/schema/oxm 
+	http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+
+    <description>
+        This web application context contains Spring-WS beans. The beans defined in this context are automatically
+        detected by Spring-WS, similar to the way Controllers are picked up in Spring Web MVC.
+	</description>
+ 
+	<sws:annotation-driven />
+
+    <sws:interceptors>
+        <bean id="validatingInterceptor"  class="org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor"
+              p:schema="/WEB-INF/recipe.xsd"
+              p:validateRequest="true"
+              p:validateResponse="true"/>
+
+        <bean id="loggingInterceptor" class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
+    </sws:interceptors>
+
+    <beans profile="default">
+        <sws:dynamic-wsdl id="recipe"
+                          portTypeName="RecipePort"
+                          locationUri="http://localhost:8080/spring-ws-recipe/binit/ws"
+                          targetNamespace="http://binit.blogspot.com/ws/schema/recipe">
+            <sws:xsd location="/WEB-INF/recipe.xsd"/>
+        </sws:dynamic-wsdl>
+
+        <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"
+              p:mappingLocation="/WEB-INF/castor-mapping.xml" />
+
+        <bean id="marshallingPayloadMethodProcessor" class="org.springframework.ws.server.endpoint.adapter.method.MarshallingPayloadMethodProcessor">
+            <constructor-arg ref="castorMarshaller"/>
+            <constructor-arg ref="castorMarshaller"/>
+        </bean>
+
+        <bean id="defaultMethodEndpointAdapter" class="org.springframework.ws.server.endpoint.adapter.DefaultMethodEndpointAdapter">
+            <property name="methodArgumentResolvers">
+                <list>
+                    <ref bean="marshallingPayloadMethodProcessor"/>
+                </list>
+            </property>
+            <property name="methodReturnValueHandlers">
+                <list>
+                    <ref bean="marshallingPayloadMethodProcessor"/>
+                </list>
+            </property>
+        </bean>
+    </beans>
+
+    <beans profile="cloud">
+        <sws:dynamic-wsdl id="cloud-recipe"
+                          portTypeName="RecipePort"
+                          locationUri="#{systemEnvironment.DYNAMIC_WSDL_LOCATION_URI}"
+                          targetNamespace="#{systemEnvironment.TARGET_NAMESPACE_URI}">
+            <sws:xsd location="/WEB-INF/recipe.xsd"/>
+        </sws:dynamic-wsdl>
+
+        <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"
+              p:mappingLocation="/WEB-INF/castor-mapping.xml" />
+
+        <bean id="marshallingPayloadMethodProcessor" class="org.springframework.ws.server.endpoint.adapter.method.MarshallingPayloadMethodProcessor">
+            <constructor-arg ref="castorMarshaller"/>
+            <constructor-arg ref="castorMarshaller"/>
+        </bean>
+
+        <bean id="defaultMethodEndpointAdapter" class="org.springframework.ws.server.endpoint.adapter.DefaultMethodEndpointAdapter">
+            <property name="methodArgumentResolvers">
+                <list>
+                    <ref bean="marshallingPayloadMethodProcessor"/>
+                </list>
+            </property>
+            <property name="methodReturnValueHandlers">
+                <list>
+                    <ref bean="marshallingPayloadMethodProcessor"/>
+                </list>
+            </property>
+        </bean>
+    </beans>
+
+</beans>
