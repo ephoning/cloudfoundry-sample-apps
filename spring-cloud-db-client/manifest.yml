@@ -1,7 +1,0 @@
----
-applications:
-- name: ntrs-spring-cloud-db-client
-  memory: 512M
-  instances: 1
-  host: ntrs-spring-cloud-db-client
-  path: target/ntrs-spring-cloud-db-client-1.0.0-BUILD-SNAPSHOT
