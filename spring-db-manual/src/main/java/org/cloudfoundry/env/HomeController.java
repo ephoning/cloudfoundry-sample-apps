@@ -65,7 +65,7 @@ public class HomeController {
 	    
 	    if(dataSource != null) {
 		    JdbcTemplate jt = new JdbcTemplate(dataSource);
-		    	int rowCount = JdbcTestUtils.countRowsInTable(jt,  "thing");
+		    	int rowCount = JdbcTestUtils.countRowsInTable(jt,  "Thing");
 		    	model.addAttribute("thingRowCount", rowCount);
 	    }
 	    else {

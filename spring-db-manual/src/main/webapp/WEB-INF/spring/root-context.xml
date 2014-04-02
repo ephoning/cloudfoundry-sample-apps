@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:cloud="http://schema.cloudfoundry.org/spring"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans 
-		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-		http://schema.cloudfoundry.org/spring
-        http://schema.cloudfoundry.org/spring/cloudfoundry-spring.xsd
-		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context-3.0.xsd
-		http://www.springframework.org/schema/jdbc
-    	    	http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
-	
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+	    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:cloud="http://www.springframework.org/schema/cloud"
+	    xmlns:context="http://www.springframework.org/schema/context"
+	    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		    http://www.springframework.org/schema/cloud http://www.springframework.org/schema/cloud/spring-cloud.xsd
+		    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		    http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
+
 	<jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
    		<jdbc:script location="classpath:schema.sql"/>
    		<jdbc:script location="classpath:populate.sql"/>
-	</jdbc:initialize-database>		
+	</jdbc:initialize-database>
 
 	<beans profile="default">
 		<context:property-placeholder location="classpath:jdbc.properties" />
@@ -28,14 +24,16 @@
 			<property name="username" value="${jdbc.username}" />
 			<property name="password" value="${jdbc.password}" />
 			<property name="validationQuery" value="${jdbc.validationQuery}"></property>
-		</bean>		
-  	</beans>
+		</bean>
+    </beans>
 
   	<beans profile="cloud">
-	  	<cloud:data-source id="dataSource">
-	  		<cloud:connection properties="charset=utf-8" />
- 			<cloud:pool pool-size="2" max-wait-time="2000" />
-	  	</cloud:data-source>
-  	</beans>			
+
+        <cloud:data-source id="dataSource" service-name="mysqleddie">
+            <cloud:connection properties="sessionVariables=sql_mode='ANSI';characterEncoding=UTF-8"/>
+            <cloud:pool pool-size="20" max-wait-time="200"/>
+        </cloud:data-source>
+
+    </beans>
 
 </beans>
